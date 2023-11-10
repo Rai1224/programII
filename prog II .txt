@@ -1,0 +1,142 @@
+/*1. Realizovati klasu Worker koja ima ˇcetiri podatka ˇclana i to:
+• koeficijent za platu (cijeli broj),
+• identifikacioni broj radnika (pokazivaˇc na cijeli broj),
+• ime radnika (pokazivaˇc na niz karaktera),
+• javni statiˇcki podatak koji  ́ce sluˇziti za brojanje ukupnog broja radnika (objekata date klase).
+Klasa posjeduje konstruktor, destruktor i konstruktor kopije, kao i funkcije ˇclanice za pristup podacima
+ˇclanovima radi oˇcitavanja i izmjene. Potrebno je realizovati i funkciju koja od dva radnika vra ́ca ime
+radnika sa ve ́cim koeficijentom za platu.*/
+
+#include <iostream>
+#include <string.h>
+using namespace std;
+class Worker{
+private:
+    int coeff;
+    int *id;
+    char *name;
+public:
+    ///STATICKI
+    static int number;
+    ///KONSTRUKTORI
+    Worker()
+    {
+        id=0;
+        name=0;
+        number++;
+    }
+    Worker(int A, int B,char *C)
+    {coeff=A;
+    id=new int;
+       *id=B;
+       name=new char[strlen(C)+1];
+       strcpy(name,C);
+       number++;
+    }
+    //KONSTRUKTOR KOPIJE
+    Worker(const Worker &A, const Worker &B, const Worker &C)
+    {
+        coeff=A.coeff;
+        id=new int;
+        *id=*B.id;
+        name=new char[strlen(C.name)+1];
+        strcpy(name,C.name);
+        number++;
+    }
+    ///DESTRUKTOR
+    ~Worker(){
+    delete [] name;
+    name=0;
+    delete id;
+    id=0;
+    }
+    ///GETERI I SETERI
+    void setCoeff(int a){coeff=a;};
+    int getCoeff(){return coeff;};
+
+    void setName(char *C)
+    {delete [] name;
+        name=new char[strlen(C)+1];
+        strcpy(name,C);
+    }
+    char *getName(){return name;};
+
+    void setId(int a)
+    {
+        delete id;
+        id=new int;
+        *id=a;
+    }
+    int *getId(){return id;};
+
+    char * higherCoeff ( Worker ) ;
+
+
+};///NE ZABORAVI ZA STATICKI
+int Worker::number=0;
+
+char *Worker::higherCoeff(Worker worker)
+{
+    if(coeff>=worker.coeff)
+        return name;
+            else
+            return worker.name;
+}
+
+int main()
+{
+   int coeff , id ;
+ char name [20];
+
+ cout << " Unesite podatke za prvog radnika " << endl ;
+ cin >> coeff >> id >> name ;
+ Worker worker1 ( coeff , id , name ) ;
+
+ cout << " Unesite podatke za drugog radnika " << endl ;
+ cin >> coeff >> id >> name ;
+ Worker worker2 ( coeff , id , name ) ;
+
+ // poziv konstruktora kopije
+ Worker worker3 ( worker2 ) ;
+ cout << " Sada radnik 3 ima ime " << worker3 . getName () << endl ;
+ cout << " Ukupno je kreirano " << Worker :: number << " radnika ." << endl ;
+cout << " Vise je placen radnik " << worker1 . higherCoeff ( worker2 ) << endl ;
+}
+/*operator dodjele
+Worker &Worker::operator=(const Worker &X)
+{if(this != &X)
+{
+sirina= X.sirina;
+visina= X.visina;
+delete [] naziv;----char pokazivac
+naziv= new char[strlen(X.naziv)+1];
+strcpy(naziv,X.naziv);
+}
+return *this;
+}*/
+ 
+ /*NIZ
+ Array(int *x,int n)
+ {
+   X=new int[n];
+   for(int i=0; i<n; i++)
+    X[i]=x[i];
+    N=n;
+ }
+ //konstruktor KOPIJE
+ Array(const Array &T)
+ {
+   X=new int[T.N];
+   for(int i=0; i<T.N; i++)
+    X[i]=T.X[i];
+    N=T.N;
+ }
+ 
+ u mainu
+ int Y[]=(1,2,3);
+ Array B(Y,5);
+ /*
+ 
+
+
+
